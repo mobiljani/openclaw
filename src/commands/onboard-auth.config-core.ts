@@ -12,6 +12,11 @@ import {
   XIAOMI_DEFAULT_MODEL_ID,
 } from "../agents/models-config.providers.js";
 import {
+  buildPerplexityModelDefinition,
+  PERPLEXITY_BASE_URL,
+  PERPLEXITY_MODEL_CATALOG,
+} from "../agents/perplexity-models.js";
+import {
   buildSyntheticModelDefinition,
   SYNTHETIC_BASE_URL,
   SYNTHETIC_DEFAULT_MODEL_REF,
@@ -32,6 +37,8 @@ import {
   HUGGINGFACE_DEFAULT_MODEL_REF,
   OPENROUTER_DEFAULT_MODEL_REF,
   TOGETHER_DEFAULT_MODEL_REF,
+  PERPLEXITY_DEFAULT_MODEL_REF,
+  VERCEL_AI_GATEWAY_DEFAULT_MODEL_REF,
   XIAOMI_DEFAULT_MODEL_REF,
   ZAI_DEFAULT_MODEL_REF,
   XAI_DEFAULT_MODEL_REF,
@@ -892,6 +899,83 @@ export function applyQianfanConfig(cfg: OpenClawConfig): OpenClawConfig {
               }
             : undefined),
           primary: QIANFAN_DEFAULT_MODEL_REF,
+        },
+      },
+    },
+  };
+}
+
+/**
+ * Apply Perplexity provider configuration without changing the default model.
+ * Registers Perplexity models and sets up the provider, but preserves existing model selection.
+ */
+export function applyPerplexityProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const models = { ...cfg.agents?.defaults?.models };
+  models[PERPLEXITY_DEFAULT_MODEL_REF] = {
+    ...models[PERPLEXITY_DEFAULT_MODEL_REF],
+    alias: models[PERPLEXITY_DEFAULT_MODEL_REF]?.alias ?? "Sonar Pro",
+  };
+
+  const providers = { ...cfg.models?.providers };
+  const existingProvider = providers.perplexity;
+  const existingModels = Array.isArray(existingProvider?.models) ? existingProvider.models : [];
+  const perplexityModels = PERPLEXITY_MODEL_CATALOG.map(buildPerplexityModelDefinition);
+  const mergedModels = [
+    ...existingModels,
+    ...perplexityModels.filter(
+      (model) => !existingModels.some((existing) => existing.id === model.id),
+    ),
+  ];
+  const { apiKey: existingApiKey, ...existingProviderRest } = (existingProvider ?? {}) as Record<
+    string,
+    unknown
+  > as { apiKey?: string };
+  const resolvedApiKey = typeof existingApiKey === "string" ? existingApiKey : undefined;
+  const normalizedApiKey = resolvedApiKey?.trim();
+  providers.perplexity = {
+    ...existingProviderRest,
+    baseUrl: PERPLEXITY_BASE_URL,
+    api: "openai-completions",
+    ...(normalizedApiKey ? { apiKey: normalizedApiKey } : {}),
+    models: mergedModels.length > 0 ? mergedModels : perplexityModels,
+  };
+
+  return {
+    ...cfg,
+    agents: {
+      ...cfg.agents,
+      defaults: {
+        ...cfg.agents?.defaults,
+        models,
+      },
+    },
+    models: {
+      mode: cfg.models?.mode ?? "merge",
+      providers,
+    },
+  };
+}
+
+/**
+ * Apply Perplexity provider configuration AND set Perplexity as the default model.
+ * Use this when Perplexity is the primary provider choice during onboarding.
+ */
+export function applyPerplexityConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const next = applyPerplexityProviderConfig(cfg);
+  const existingModel = next.agents?.defaults?.model;
+  return {
+    ...next,
+    agents: {
+      ...next.agents,
+      defaults: {
+        ...next.agents?.defaults,
+        model: {
+          ...(existingModel && "fallbacks" in (existingModel as Record<string, unknown>)
+            ? {
+                fallbacks: (existingModel as { fallbacks?: string[] }).fallbacks,
+              }
+            : undefined),
+          primary: PERPLEXITY_DEFAULT_MODEL_REF,
         },
       },
     },

@@ -23,6 +23,7 @@ const MODEL_PICK_PROVIDER_PREFERENCE = [
   "groq",
   "cerebras",
   "mistral",
+  "perplexity",
   "xai",
   "lmstudio",
 ] as const;

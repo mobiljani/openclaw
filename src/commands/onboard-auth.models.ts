@@ -1,6 +1,14 @@
 import type { ModelDefinitionConfig } from "../config/types.js";
 import { QIANFAN_BASE_URL, QIANFAN_DEFAULT_MODEL_ID } from "../agents/models-config.providers.js";
 
+export {
+  PERPLEXITY_BASE_URL,
+  PERPLEXITY_DEFAULT_MODEL_ID,
+  PERPLEXITY_MODEL_CATALOG,
+  buildPerplexityModelDefinition,
+} from "../agents/perplexity-models.js";
+export const PERPLEXITY_DEFAULT_MODEL_REF = "perplexity/sonar-pro";
+
 export const DEFAULT_MINIMAX_BASE_URL = "https://api.minimax.io/v1";
 export const MINIMAX_API_BASE_URL = "https://api.minimax.io/anthropic";
 export const MINIMAX_HOSTED_MODEL_ID = "MiniMax-M2.1";

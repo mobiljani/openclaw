@@ -18,6 +18,11 @@ import {
 } from "./huggingface-models.js";
 import { resolveAwsSdkEnvVarName, resolveEnvApiKey } from "./model-auth.js";
 import {
+  buildPerplexityModelDefinition,
+  PERPLEXITY_BASE_URL,
+  PERPLEXITY_MODEL_CATALOG,
+} from "./perplexity-models.js";
+import {
   buildSyntheticModelDefinition,
   SYNTHETIC_BASE_URL,
   SYNTHETIC_MODEL_CATALOG,
@@ -567,6 +572,14 @@ async function buildHuggingfaceProvider(apiKey?: string): Promise<ProviderConfig
   };
 }
 
+export function buildPerplexityProvider(): ProviderConfig {
+  return {
+    baseUrl: PERPLEXITY_BASE_URL,
+    api: "openai-completions",
+    models: PERPLEXITY_MODEL_CATALOG.map(buildPerplexityModelDefinition),
+  };
+}
+
 function buildTogetherProvider(): ProviderConfig {
   return {
     baseUrl: TOGETHER_BASE_URL,
@@ -749,6 +762,13 @@ export async function resolveImplicitProviders(params: {
       ...hfProvider,
       apiKey: huggingfaceKey,
     };
+  }
+
+  const perplexityKey =
+    resolveEnvApiKeyVarName("perplexity") ??
+    resolveApiKeyFromProfiles({ provider: "perplexity", store: authStore });
+  if (perplexityKey) {
+    providers.perplexity = { ...buildPerplexityProvider(), apiKey: perplexityKey };
   }
 
   const qianfanKey =

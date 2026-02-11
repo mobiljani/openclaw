@@ -45,6 +45,7 @@ export type AuthChoice =
   | "qwen-portal"
   | "xai-api-key"
   | "qianfan-api-key"
+  | "perplexity-api-key"
   | "custom-api-key"
   | "skip";
 export type AuthChoiceGroupId =
@@ -68,6 +69,7 @@ export type AuthChoiceGroupId =
   | "together"
   | "huggingface"
   | "qianfan"
+  | "perplexity"
   | "xai"
   | "custom";
 export type GatewayAuthChoice = "token" | "password";

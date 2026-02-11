@@ -77,4 +77,7 @@ If no base URL is set, OpenClaw chooses a default based on the API key source:
 - `perplexity/sonar-pro` (default) — multi-step reasoning + web search
 - `perplexity/sonar-reasoning-pro` — deep research
 
+Perplexity can also be used as a **model provider** for the main conversation loop.
+See [Perplexity model provider](/providers/perplexity) for that setup.
+
 See [Web tools](/tools/web) for the full web_search configuration.

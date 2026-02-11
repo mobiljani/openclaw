@@ -130,6 +130,12 @@ const AUTH_CHOICE_GROUP_DEFS: {
     choices: ["huggingface-api-key"],
   },
   {
+    value: "perplexity",
+    label: "Perplexity",
+    hint: "Sonar Pro (search-grounded)",
+    choices: ["perplexity-api-key"],
+  },
+  {
     value: "venice",
     label: "Venice AI",
     hint: "Privacy-focused (uncensored models)",
@@ -226,6 +232,11 @@ export function buildAuthChoiceOptions(params: {
     value: "huggingface-api-key",
     label: "Hugging Face API key (HF token)",
     hint: "Inference Providers — OpenAI-compatible chat",
+  });
+  options.push({
+    value: "perplexity-api-key",
+    label: "Perplexity API key",
+    hint: "Search-grounded AI (Sonar Pro)",
   });
   options.push({
     value: "github-copilot",
