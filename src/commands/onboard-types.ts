@@ -117,6 +117,7 @@ export type OnboardOptions = {
   veniceApiKey?: string;
   togetherApiKey?: string;
   huggingfaceApiKey?: string;
+  perplexityApiKey?: string;
   opencodeZenApiKey?: string;
   xaiApiKey?: string;
   qianfanApiKey?: string;

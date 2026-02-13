@@ -24,6 +24,7 @@ import {
   applyVeniceConfig,
   applyTogetherConfig,
   applyHuggingfaceConfig,
+  applyPerplexityConfig,
   applyVercelAiGatewayConfig,
   applyLitellmConfig,
   applyXaiConfig,
@@ -44,6 +45,7 @@ import {
   setVeniceApiKey,
   setTogetherApiKey,
   setHuggingfaceApiKey,
+  setPerplexityApiKey,
   setVercelAiGatewayApiKey,
   setXiaomiApiKey,
   setZaiApiKey,
@@ -667,6 +669,29 @@ export async function applyNonInteractiveAuthChoice(params: {
       mode: "api_key",
     });
     return applyHuggingfaceConfig(nextConfig);
+  }
+
+  if (authChoice === "perplexity-api-key") {
+    const resolved = await resolveNonInteractiveApiKey({
+      provider: "perplexity",
+      cfg: baseConfig,
+      flagValue: opts.perplexityApiKey,
+      flagName: "--perplexity-api-key",
+      envVar: "PERPLEXITY_API_KEY",
+      runtime,
+    });
+    if (!resolved) {
+      return null;
+    }
+    if (resolved.source !== "profile") {
+      await setPerplexityApiKey(resolved.key);
+    }
+    nextConfig = applyAuthProfileConfig(nextConfig, {
+      profileId: "perplexity:default",
+      provider: "perplexity",
+      mode: "api_key",
+    });
+    return applyPerplexityConfig(nextConfig);
   }
 
   if (authChoice === "custom-api-key") {

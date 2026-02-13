@@ -20,6 +20,7 @@ type AuthChoiceFlagOptions = Pick<
   | "veniceApiKey"
   | "togetherApiKey"
   | "huggingfaceApiKey"
+  | "perplexityApiKey"
   | "zaiApiKey"
   | "xiaomiApiKey"
   | "minimaxApiKey"
@@ -53,6 +54,7 @@ const AUTH_CHOICE_FLAG_MAP = [
   { flag: "minimaxApiKey", authChoice: "minimax-api", label: "--minimax-api-key" },
   { flag: "opencodeZenApiKey", authChoice: "opencode-zen", label: "--opencode-zen-api-key" },
   { flag: "huggingfaceApiKey", authChoice: "huggingface-api-key", label: "--huggingface-api-key" },
+  { flag: "perplexityApiKey", authChoice: "perplexity-api-key", label: "--perplexity-api-key" },
   { flag: "litellmApiKey", authChoice: "litellm-api-key", label: "--litellm-api-key" },
 ] satisfies ReadonlyArray<AuthChoiceFlag>;
 
