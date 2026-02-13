@@ -7,7 +7,6 @@ export {
   PERPLEXITY_MODEL_CATALOG,
   buildPerplexityModelDefinition,
 } from "../agents/perplexity-models.js";
-export const PERPLEXITY_DEFAULT_MODEL_REF = "perplexity/sonar-pro";
 
 export const DEFAULT_MINIMAX_BASE_URL = "https://api.minimax.io/v1";
 export const MINIMAX_API_BASE_URL = "https://api.minimax.io/anthropic";

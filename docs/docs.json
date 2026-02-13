@@ -104,6 +104,10 @@
       "destination": "/providers/qianfan"
     },
     {
+      "source": "/perplexity",
+      "destination": "/providers/perplexity"
+    },
+    {
       "source": "/mattermost",
       "destination": "/channels/mattermost"
     },
@@ -957,6 +961,7 @@
                   "tools/llm-task",
                   "tools/exec",
                   "tools/web",
+                  "perplexity",
                   "tools/apply-patch",
                   "tools/elevated",
                   "tools/thinking",
@@ -1564,7 +1569,8 @@
                   "zh-CN/providers/glm",
                   "zh-CN/providers/zai",
                   "zh-CN/providers/synthetic",
-                  "zh-CN/providers/qianfan"
+                  "zh-CN/providers/qianfan",
+                  "zh-CN/providers/perplexity"
                 ]
               }
             ]
